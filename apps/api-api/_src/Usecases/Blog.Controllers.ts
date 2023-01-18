@@ -6,6 +6,10 @@ export const BlogControllers = Effect.servicesWith(
   { BlogPostRepository },
   ({ BlogPostRepository }) =>
     matchResource(BlogRsc)({
+      FindPost: req =>
+        BlogPostRepository.find(req.id)
+          .map(_ => _.getOrNull),
+
       GetPosts: () => BlogPostRepository.all.map(items => ({ items })),
 
       CreatePost: req =>
