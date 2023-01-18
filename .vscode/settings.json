@@ -8,7 +8,8 @@
     "node_modules/@effect-ts-app/schema",
     "node_modules/lodash",
     "node_modules/typescript",
-    "node_modules/@types/lodash"
+    "node_modules/@types/lodash",
+    "node_modules/vuetify/lib"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.workingDirectories": [
