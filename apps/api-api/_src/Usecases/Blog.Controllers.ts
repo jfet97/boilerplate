@@ -1,6 +1,7 @@
 import { BlogPostRepository, Operations } from "@/services.js"
 import { BlogRsc } from "@effect-ts-app/boilerplate-client"
 import { BlogPost } from "@effect-ts-app/boilerplate-types/Blog"
+import { NotFoundError } from "@effect-ts-app/infra/errors"
 
 export const BlogControllers = Effect.servicesWith(
   { BlogPostRepository, Operations },
@@ -17,12 +18,12 @@ export const BlogControllers = Effect.servicesWith(
           .tap(BlogPostRepository.save)
           .map(_ => _.id),
 
-      PublishPost: _req =>
+      PublishPost: req =>
         Do($ => {
-          // const _post = $(
-          //   BlogPostRepository.find(req.id)
-          //     .flatMap(_ => _.encaseInEffect(() => new NotFoundError("BlogPost", req.id)))
-          // )
+          $(
+            BlogPostRepository.find(req.id)
+              .flatMap(_ => _.encaseInEffect(() => new NotFoundError("BlogPost", req.id)))
+          )
 
           const targets = [
             "google",
