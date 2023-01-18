@@ -3,7 +3,7 @@ import * as Ex from "@effect-ts-app/infra/express/index"
 import type { ApiMainConfig } from "./config.js"
 import * as MW from "./middleware/index.js"
 import * as R from "./routes.js"
-import { Operations, StoreMaker, UserRepository } from "./services.js"
+import { BlogPostLive, Operations, StoreMaker, UserRepository } from "./services.js"
 import { Events } from "./services/Events.js"
 
 const routes = Effect.struct(R)
@@ -32,6 +32,7 @@ export function api(cfg: ApiMainConfig) {
     > logServerStart
 
   const services = Events.Live
+    > BlogPostLive
     > StoreMaker.Live(Config(cfg.storage))
     > UserRepository.Live(
       cfg.fakeUsers === "sample" ? "sample" : ""
