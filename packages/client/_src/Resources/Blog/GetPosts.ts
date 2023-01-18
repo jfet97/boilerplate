@@ -1,5 +1,7 @@
 import { BlogPost } from "@effect-ts-app/boilerplate-types/Blog"
 
+@allowAnonymous
+@allowRoles("user")
 export class GetPostsRequest extends Get("/blog/posts")<GetPostsRequest>()(
   {}
 ) {}
