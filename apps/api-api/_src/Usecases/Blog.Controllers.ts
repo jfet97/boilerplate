@@ -1,11 +1,12 @@
-import { BlogPostRepository, Operations } from "@/services.js"
+import { BlogPostRepository, Events, Operations } from "@/services.js"
 import { BlogRsc } from "@effect-ts-app/boilerplate-client"
+import { BogusEvent } from "@effect-ts-app/boilerplate-client/Events"
 import { BlogPost } from "@effect-ts-app/boilerplate-types/Blog"
 import { NotFoundError } from "@effect-ts-app/infra/errors"
 
 export const BlogControllers = Effect.servicesWith(
-  { BlogPostRepository, Operations },
-  ({ BlogPostRepository, Operations }) =>
+  { BlogPostRepository, Operations, Events },
+  ({ BlogPostRepository, Events, Operations }) =>
     matchResource(BlogRsc)({
       FindPost: req =>
         BlogPostRepository.find(req.id)
@@ -49,6 +50,7 @@ export const BlogControllers = Effect.servicesWith(
                 total: PositiveInt(targets.length),
                 completed: PositiveInt(done.length)
               })
+                .zipRight(Events.publish(new BogusEvent({})))
             )
               .delay(DUR.seconds(1))
               .forever
